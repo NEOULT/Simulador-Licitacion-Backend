@@ -4,6 +4,7 @@ import multer from 'multer';
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
+import loginRoutes from './routes/loginRoutes.js';
 import { fileURLToPath } from 'url';
 import {procesarOferta, listarOfertas, subirOferta } from './controllers/ofertasController.js';
 import licitacionRoutes from './routes/licitacionRoutes.js';
@@ -34,6 +35,7 @@ const upload = multer({ storage: storage });
 
 app.use(express.json());
 app.use('', licitacionRoutes); // Rutas de licitación
+app.use('', loginRoutes); // Rutas de login
 
 app.post('/oferta', upload.single('paquete_dat'), subirOferta);
 app.get('/ofertas/lista', listarOfertas);
