@@ -31,7 +31,7 @@ export function procesarPaqueteHibrido(archivoCifradoBuffer) {
 
         const paqueteJSON = JSON.parse(paqueteBufferDescifrado.toString('utf8'));
         const { firma, certificado, documento, metadata } = paqueteJSON;
-
+        
         // --- 4. Verificación de la Firma Digital ---
         const documentoBuffer = Buffer.from(documento, 'base64');
         const certificadoPEM = Buffer.from(certificado, 'base64').toString('utf8');
@@ -40,12 +40,14 @@ export function procesarPaqueteHibrido(archivoCifradoBuffer) {
         const verifier = crypto.createVerify('RSA-SHA256');
         verifier.update(documentoBuffer);
         const firmaEsValida = verifier.verify(clavePublicaEmpresa, firma, 'base64');
+        console.log(`🔏 Firma digital verificada: ${firmaEsValida ? 'VÁLIDA' : 'INVÁLIDA'}`);
         
         return {
             status: 'success',
             firma_valida: firmaEsValida,
             metadata: metadata,
-            documento_buffer: documentoBuffer
+            documento_buffer: documentoBuffer,
+            certificado: certificadoPEM
         };
 
     } catch (error) {

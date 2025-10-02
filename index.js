@@ -6,6 +6,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import {procesarOferta, listarOfertas, subirOferta } from './controllers/ofertasController.js';
+import licitacionRoutes from './routes/licitacionRoutes.js';
 
 
 dotenv.config();
@@ -31,6 +32,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+app.use(express.json());
+app.use('', licitacionRoutes); // Rutas de licitación
 
 app.post('/oferta', upload.single('paquete_dat'), subirOferta);
 app.get('/ofertas/lista', listarOfertas);
